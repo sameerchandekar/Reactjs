@@ -1,11 +1,10 @@
 import React from 'react';
 
-class Home extends React.Component{
+export class Home extends React.Component{
 
 render(){
 
   return (
-
     <div>
     <div><Header /></div><br></br>
     <div>Main Body</div><br></br>
@@ -17,15 +16,7 @@ render(){
 }
 
 
-class Footer extends React.Component{
 
-render(){
-  return(
-    <div>This is header</div>
-  );
-};
-
-}
 
 
 class Header extends React.Component{

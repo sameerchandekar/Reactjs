@@ -19,7 +19,7 @@ class Login extends React.Component{
     this.setState({[name] : value});
   }
 
-  handleSubmit(event) {
+handleSubmit(event) {
 
     let payload = {
       uname : this.state.username,
@@ -30,9 +30,9 @@ class Login extends React.Component{
     loginServ.submit(payload , this.displayMsg);
 
     event.preventDefault();
-  }
+}
 
-  displayMsg(response){
+displayMsg(response){
 
       if(response !== null || response !== undefined){
       this.setState({ value : '', isSuccessMsg : response.msg  });
@@ -43,10 +43,7 @@ handleClick(event){
     event.preventDefault();
     var loginServ = new loginService();
     loginServ.logout(this.displayMsg);
-
 }
-
-
 
 render(){ return (
     <div>

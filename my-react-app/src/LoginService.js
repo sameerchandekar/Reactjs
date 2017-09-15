@@ -3,8 +3,11 @@ import $ from 'jquery';
 class loginService {
 
 submit(payload , callback){
-
-     $.ajax( "/login/" + payload.uname + "/" +  payload.pswd ).done(function( data ) {
+    console.log('Inside Ajax call');
+    console.log("/login/" + payload.uname + "/" +  payload.pswd);
+    $.ajax( "/login/" + payload.uname + "/" +  payload.pswd ).done(function( data ) {
+          console.log(data);
+          localStorage.setItem('auth', data);
           callback(data);
   });
 }
@@ -12,7 +15,8 @@ submit(payload , callback){
 logout(callback){
 
     $.ajax( "/logout" ).done(function( data ) {
-            callback(data);
+      localStorage.removeItem('auth');
+      callback(data);
     });
 }
 

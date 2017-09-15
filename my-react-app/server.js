@@ -5,11 +5,11 @@ var webpack = require('webpack');
 var config = require('./webpack.config');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var ReactDOMServer = require('react-dom/server');
-var React = require('react');
+//var ReactDOMServer = require('react-dom/server');
+//var React = require('react');
 //import ReactDOM from require('react-dom');
-require('./src/form');
-var LoginForm = require('./src/app');
+//require('./src/form');
+//var LoginForm = require('./src/app');
 //import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 
 
@@ -36,28 +36,45 @@ app.get('/css/bootstrap.min.css', function (req, res) {
 
 app.get('/logout' , function(req,res){
 	var u = req.session.uname;
+	if(u === undefined){
+		u = " ";
+	}
 	req.session.destroy();
 	res.set('Content-Type', 'application/json');
-	res.send({"msg" :  u + ".You have logged out successfully. " });
+	res.send({"msg" :  u + ".You have logged out successfully. " , "logout" :true });
 });
 
 app.get('/login/:uname/:pswd', function (req, res) {
 	console.log("here comes the request " + req.params.uname);
 	res.set('Content-Type', 'application/json');
+	var user = req.params.uname;
 	req.session.uname = req.params.uname;
 	if(req.session.page_views){
 		 req.session.page_views++;
-
 	} else {
 		 req.session.page_views = 1;
 	}
-  res.send({"msg" : "Welcome " + req.params.uname + ".You have logged in successfully. " + req.session.page_views});
+	var resp = null;
+
+	if(user === 'user'){
+		resp =  {	"msg" : "Welcome " + req.params.uname + " " + req.params.pswd + ".You have logged in successfully. " + req.session.page_views ,
+			"role" : "user"
+		};
+	}else if (user === 'admin'){
+		resp = {	"msg" : "Welcome " + req.params.uname + " " + req.params.pswd + ".You have logged in successfully. " + req.session.page_views ,
+			"role" : "admin"
+		};
+	}else{
+  resp = {"msg" : "Welcome " + req.params.uname + " " + req.params.pswd + ".You have logged in successfully. " + req.session.page_views ,
+						"role" : ""
+	};
+	}
+	console.log(resp);
+	res.send(resp);
 });
 
 app.get('*', function (req, res) {
-	//res.render(ReactDOMServer.renderToString(<LoginPage />));
-	res.render(React.createFactory(LoginForm));
-  //res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, 'build/index.html'));
 });
 
 app.listen(
